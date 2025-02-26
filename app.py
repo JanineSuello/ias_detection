@@ -91,7 +91,7 @@ def is_malicious(url):
     if gsb_malicious:
         return True, gsb_message
 
-    return False, " No issues detected."  # Safe if no checks flag the URL
+    return False, " No issues detected. Nevertheless, be cautious when browsing."  # Safe if no checks flag the URL
 
 @app.route('/')
 def index():

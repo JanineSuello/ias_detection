@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Malicious Link Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Link Detector</h1>
+        <input type="text" id="urlInput" placeholder="Enter URL here..." />
+        <button onclick="checkLink()">Check Link</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        async function checkLink() {
+            const url = document.getElementById('urlInput').value;
+            const result = document.getElementById('result');
+
+            if (!url) {
+                result.textContent = "Please enter a URL.";
+                return;
+            }
+
+            result.textContent = "Checking...";
+
+            try {
+                const response = await fetch('/check', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ url })
+                });
+                
+                const data = await response.json();
+                result.textContent = data.malicious ? `⚠️ Malicious: ${data.message}` : `✅ Safe: ${data.message}`;
+            } catch (error) {
+                result.textContent = "Error checking URL.";
+            }
+        }
+    </script>
+</body>
+</html>
